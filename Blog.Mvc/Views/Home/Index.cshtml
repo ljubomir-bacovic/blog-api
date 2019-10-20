@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Blog.Infrastructure.Data.Models.ArticleModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="elements"><span> @Html.DisplayFor(modelItem => item.Title) </span></a>               
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Author: @Html.DisplayFor(modelItem => item.Author) Posted on: @Html.DisplayFor(modelItem => item.Date)
+            </td>            
+        </tr>
+        <tr>
+            <td>
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Text))
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,31 @@
+#ignore thumbnails created by windows
+Thumbs.db
+#Ignore files build by Visual Studio
+*.obj
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+*.lib
+*.sbr
+.vs
+~$.
+bin/
+obj/
+packages/
+*.dbmdl
+*.tmp_proj
+/Installer
+/.idea
+/UpgradeLog.htm
+*.Tmp

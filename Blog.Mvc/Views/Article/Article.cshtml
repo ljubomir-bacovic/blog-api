@@ -1,0 +1,38 @@
+﻿@model Blog.Infrastructure.Data.Models.ArticleDetailsModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+    <table>
+        <tr>
+            <td>
+                <h1>
+                    @Html.DisplayFor(m => m.Title)
+                </h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Text))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Comments:
+            </td>
+        </tr>
+        @foreach (var item in Model.Comments)
+        {
+            <tr>
+                <td>
+                    Author: @Html.DisplayFor(modelItem => item.Author) Posted on: @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+            </tr>
+        }
+
+    </table>

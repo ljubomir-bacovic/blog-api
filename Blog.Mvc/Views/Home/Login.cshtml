@@ -1,0 +1,16 @@
+﻿@model Blog.Infrastructure.Data.Models.LoginUserModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+@using (Html.BeginForm("Authenticate", "Account", FormMethod.Post))
+{
+<div>@Html.TextBoxFor(model => model.Username)</div>
+<div>@Html.TextBoxFor(model => model.Password)</div>
+<div>
+    <button type="submit">Login</button>
+</div>
+}
+
