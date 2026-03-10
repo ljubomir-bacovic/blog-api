@@ -1,6 +1,8 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Blog.Mvc.Identity.Data.Migrations
 {

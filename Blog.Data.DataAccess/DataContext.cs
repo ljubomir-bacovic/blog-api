@@ -90,7 +90,7 @@ namespace Blog.Data.DataAccess
 
         public int SqlQuery<T>(string sql, params object[] parameters)
         {
-            return _context.Database.ExecuteSqlCommand(sql, parameters);
+            return _context.Database.ExecuteSqlRaw(sql, parameters);
         }
 
         public void Dispose()
