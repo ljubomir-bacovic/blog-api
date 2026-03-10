@@ -51,7 +51,7 @@ namespace Blog.Data.Configurations
                     Title = "This Is Your FIrst Blog Post",
                     Text = sb.ToString(),
                     UserId = DataConstants.ContributorUserId,
-                    Date = DateTimeOffset.Now
+                    Date = new DateTimeOffset(new DateTime(2019, 10, 18, 23, 14, 45, 873, DateTimeKind.Unspecified).AddTicks(6036), new TimeSpan(0, 2, 0, 0, 0))
                 });
         }
     }

@@ -43,7 +43,7 @@ namespace Blog.Data.Configurations
                     ArticleId = DataConstants.FirstBlogArticleId,
                     Text = "This is a very nice insight. Thank you.",
                     UserId = DataConstants.RegularUserId,
-                    Date = DateTimeOffset.Now
+                    Date = new DateTimeOffset(new DateTime(2019, 10, 18, 23, 14, 45, 877, DateTimeKind.Unspecified).AddTicks(687), new TimeSpan(0, 2, 0, 0, 0))
                 });
         }
     }
