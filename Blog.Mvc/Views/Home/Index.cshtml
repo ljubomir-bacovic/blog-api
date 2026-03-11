@@ -10,7 +10,10 @@
     @foreach (var item in Model)
     {
         var fullText = System.Web.HttpUtility.HtmlDecode(item.Text);
-        var preview = fullText.Length > 300 ? fullText.Substring(0, 300) + "..." : fullText;
+        // Strip HTML tags for preview to avoid breaking tags - using a safer approach
+        var plainText = System.Text.RegularExpressions.Regex.Replace(fullText, @"<[^>]+>|&nbsp;", " ", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        plainText = System.Text.RegularExpressions.Regex.Replace(plainText, @"\s+", " ").Trim();
+        var preview = plainText.Length > 300 ? plainText.Substring(0, 300) + "..." : plainText;
         var articleId = "article-" + item.Id;
         
         <div class="card mb-4 shadow-sm">
@@ -22,16 +25,16 @@
                 </h2>
                 
                 <p class="card-text text-muted small mb-3">
-                    <i class="bi bi-person"></i> @Html.DisplayFor(modelItem => item.Author) 
+                    👤 @Html.DisplayFor(modelItem => item.Author) 
                     <span class="mx-2">•</span>
-                    <i class="bi bi-calendar"></i> @Html.DisplayFor(modelItem => item.Date)
+                    📅 @Html.DisplayFor(modelItem => item.Date)
                 </p>
                 
                 <div class="card-text article-content" id="@articleId-preview">
-                    @Html.Raw(preview)
+                    @preview
                 </div>
                 
-                @if (fullText.Length > 300)
+                @if (plainText.Length > 300)
                 {
                     <div class="card-text article-content" id="@articleId-full" style="display: none;">
                         @Html.Raw(fullText)
@@ -39,7 +42,7 @@
                     
                     <button class="btn btn-link p-0 mt-2 read-more-btn" 
                             data-article-id="@articleId" 
-                            onclick="toggleArticle('@articleId')">
+                            onclick="toggleArticle('@articleId', this)">
                         Read More
                     </button>
                 }
@@ -56,10 +59,9 @@
 
 @section Scripts {
     <script>
-        function toggleArticle(articleId) {
-            var preview = document.getElementById(articleId + '-preview');
-            var full = document.getElementById(articleId + '-full');
-            var btn = document.querySelector('[data-article-id="' + articleId + '"]');
+        function toggleArticle(articleId, btn) {
+            const preview = document.getElementById(articleId + '-preview');
+            const full = document.getElementById(articleId + '-full');
             
             if (preview.style.display === 'none') {
                 preview.style.display = 'block';
