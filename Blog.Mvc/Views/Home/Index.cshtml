@@ -4,23 +4,72 @@
     ViewData["Title"] = "Home Page";
 }
 
-<table>
+<div class="container mt-4">
+    <h1 class="mb-4">Blog Posts</h1>
+    
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="elements"><span> @Html.DisplayFor(modelItem => item.Title) </span></a>               
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Author: @Html.DisplayFor(modelItem => item.Author) Posted on: @Html.DisplayFor(modelItem => item.Date)
-            </td>            
-        </tr>
-        <tr>
-            <td>
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Text))
-            </td>
-        </tr>
+        var fullText = System.Web.HttpUtility.HtmlDecode(item.Text);
+        var preview = fullText.Length > 300 ? fullText.Substring(0, 300) + "..." : fullText;
+        var articleId = "article-" + item.Id;
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="text-decoration-none text-dark">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </a>
+                </h2>
+                
+                <p class="card-text text-muted small mb-3">
+                    <i class="bi bi-person"></i> @Html.DisplayFor(modelItem => item.Author) 
+                    <span class="mx-2">•</span>
+                    <i class="bi bi-calendar"></i> @Html.DisplayFor(modelItem => item.Date)
+                </p>
+                
+                <div class="card-text article-content" id="@articleId-preview">
+                    @Html.Raw(preview)
+                </div>
+                
+                @if (fullText.Length > 300)
+                {
+                    <div class="card-text article-content" id="@articleId-full" style="display: none;">
+                        @Html.Raw(fullText)
+                    </div>
+                    
+                    <button class="btn btn-link p-0 mt-2 read-more-btn" 
+                            data-article-id="@articleId" 
+                            onclick="toggleArticle('@articleId')">
+                        Read More
+                    </button>
+                }
+                
+                <div class="mt-3">
+                    <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="btn btn-primary btn-sm">
+                        View Full Article
+                    </a>
+                </div>
+            </div>
+        </div>
     }
-</table>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleArticle(articleId) {
+            var preview = document.getElementById(articleId + '-preview');
+            var full = document.getElementById(articleId + '-full');
+            var btn = document.querySelector('[data-article-id="' + articleId + '"]');
+            
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                full.style.display = 'none';
+                btn.textContent = 'Read More';
+            } else {
+                preview.style.display = 'none';
+                full.style.display = 'block';
+                btn.textContent = 'Show Less';
+            }
+        }
+    </script>
+}
