@@ -53,3 +53,41 @@ body {
 
     height: calc(100vh);
 }
+
+/* Blog post card styles */
+.card {
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.card-title a {
+    color: #333;
+    transition: color 0.2s ease-in-out;
+}
+
+.card-title a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.article-content {
+    line-height: 1.6;
+    color: #555;
+}
+
+.read-more-btn {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.read-more-btn:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}

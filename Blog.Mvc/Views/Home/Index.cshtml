@@ -4,23 +4,74 @@
     ViewData["Title"] = "Home Page";
 }
 
-<table>
+<div class="container mt-4">
+    <h1 class="mb-4">Blog Posts</h1>
+    
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="elements"><span> @Html.DisplayFor(modelItem => item.Title) </span></a>               
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Author: @Html.DisplayFor(modelItem => item.Author) Posted on: @Html.DisplayFor(modelItem => item.Date)
-            </td>            
-        </tr>
-        <tr>
-            <td>
-                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.Text))
-            </td>
-        </tr>
+        var fullText = System.Web.HttpUtility.HtmlDecode(item.Text);
+        // Strip HTML tags for preview to avoid breaking tags - using a safer approach
+        var plainText = System.Text.RegularExpressions.Regex.Replace(fullText, @"<[^>]+>|&nbsp;", " ", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromMilliseconds(100));
+        plainText = System.Text.RegularExpressions.Regex.Replace(plainText, @"\s+", " ").Trim();
+        var preview = plainText.Length > 300 ? plainText.Substring(0, 300) + "..." : plainText;
+        var articleId = "article-" + item.Id;
+        
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="text-decoration-none text-dark">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </a>
+                </h2>
+                
+                <p class="card-text text-muted small mb-3">
+                    👤 @Html.DisplayFor(modelItem => item.Author) 
+                    <span class="mx-2">•</span>
+                    📅 @Html.DisplayFor(modelItem => item.Date)
+                </p>
+                
+                <div class="card-text article-content" id="@articleId-preview">
+                    @preview
+                </div>
+                
+                @if (plainText.Length > 300)
+                {
+                    <div class="card-text article-content" id="@articleId-full" style="display: none;">
+                        @Html.Raw(fullText)
+                    </div>
+                    
+                    <button class="btn btn-link p-0 mt-2 read-more-btn" 
+                            data-article-id="@articleId" 
+                            onclick="toggleArticle('@articleId', this)">
+                        Read More
+                    </button>
+                }
+                
+                <div class="mt-3">
+                    <a href="./Article/Article/@Html.DisplayFor(modelItem => item.Id)" class="btn btn-primary btn-sm">
+                        View Full Article
+                    </a>
+                </div>
+            </div>
+        </div>
     }
-</table>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleArticle(articleId, btn) {
+            const preview = document.getElementById(articleId + '-preview');
+            const full = document.getElementById(articleId + '-full');
+            
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                full.style.display = 'none';
+                btn.textContent = 'Read More';
+            } else {
+                preview.style.display = 'none';
+                full.style.display = 'block';
+                btn.textContent = 'Show Less';
+            }
+        }
+    </script>
+}
